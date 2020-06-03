@@ -20,9 +20,6 @@ public:
     {
         scan = &temp;
     }
-    ~Parser()
-    {
-    }
 
     bool Parse()
     {
@@ -53,6 +50,7 @@ public:
             return true;
         }
     }
+
     bool T()
     {
         return F() && TT();
@@ -69,20 +67,6 @@ public:
         {
             scan->nextToken();
             return F() && TT();
-        }
-        else if (scan->currentToken().getLexem() == ";")
-        {
-            scan->nextToken();
-            return F() && TT();
-        }
-
-        else
-        {
-            if (scan->currentToken().getToken() == scan->tInteger || scan->currentToken().getToken() == scan->tVariable)
-            {
-                return F() && TT();
-            }
-            return true;
         }
     }
 
