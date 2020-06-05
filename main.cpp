@@ -14,7 +14,8 @@ int main()
     {
         std::cout << "Input file is " << file << std::endl;
         Scanner sc(&ifs);
-        // Scanner scanner = Scanner(&ifs);
+
+        //return 0;
 
         Parser test(sc);
         bResult = test.Parse();

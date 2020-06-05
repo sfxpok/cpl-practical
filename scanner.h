@@ -39,7 +39,7 @@ private:
         }
 
         automata[0]['+'] = automata[0]['*'] = automata[0]['-'] = automata[0]['/'] = automata[0]['^'] = 2;
-        automata[0]['('] = automata[0][')'] = 3;
+        automata[0]['('] = automata[0][')'] = automata[0]['.'] = 3;
         automata[0]['\n'] = automata[0][' '] = automata[0]['\t'] = 4;
         automata[4]['\n'] = automata[4][' '] = automata[4]['\t'] = 4;
 
@@ -124,15 +124,30 @@ private:
         std::string lexem;
         int startColumn = column;
         int startRow = row;
+        std::string nextLexeme;
 
         do
         {
             int tempState = getNextState(currentState, peek());
 
+            // if (tempState == 1) {
+            //     nextLexeme = peek();
+
+            //     if (nextLexeme == ".") {
+            //         lexem += (char)read();
+            //     }
+
+            //     nextLexeme = peek();
+
+            //     if (nextLexeme == )
+
+            // }
+
             if (tempState != noEdge)
             {
                 currentState = tempState;
                 lexem += (char)read();
+
             }
             else
             {
@@ -146,6 +161,7 @@ private:
                     }
                     else
                     {
+                        std::cout << token << std::endl; // output the token
                         return token;
                     }
                 }

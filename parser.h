@@ -23,7 +23,14 @@ public:
 
     bool Parse()
     {
-        scan->nextToken();
+        bool terminateScan = false;
+
+        do {
+
+            scan->nextToken();
+
+        } while(!scan->currentToken().isEof());
+
         //return S() && scan->currentToken().isEof();
         return E() && EOF;
     }
