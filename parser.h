@@ -16,22 +16,21 @@ private:
     Scanner *scan;
 
 public:
-    Parser(Scanner &temp)
+    Parser(Scanner &scanner_addr)
     {
-        scan = &temp;
+        scan = &scanner_addr;
     }
 
     bool Parse()
     {
-        bool terminateScan = false;
 
-        do {
+        do
+        { // get all tokens
 
             scan->nextToken();
 
-        } while(!scan->currentToken().isEof());
+        } while (!scan->currentToken().isEof());
 
-        //return S() && scan->currentToken().isEof();
         return E() && EOF;
     }
 

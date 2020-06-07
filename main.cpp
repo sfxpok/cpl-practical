@@ -5,30 +5,28 @@
 int main()
 {
 
-    std::ifstream ifs;
+    std::ifstream fileStream;
     std::string file = "scanner_test";
-    ifs.open(file);
-    bool bResult = false;
+    fileStream.open(file);
+    bool parseResult = false;
 
-    if (ifs.is_open())
+    if (fileStream.is_open())
     {
         std::cout << "Input file is " << file << std::endl;
-        Scanner sc(&ifs);
+        Scanner sc(&fileStream);
 
-        //return 0;
-
-        Parser test(sc);
-        bResult = test.Parse();
-        if (bResult)
+        Parser parsingTask(sc);
+        parseResult = parsingTask.Parse();
+        if (parseResult)
         {
-            std::cout << "Correct" << std::endl;
+            std::cout << "TRUE" << std::endl;
         }
         else
         {
-            std::cout << "Incorrect" << std::endl;
+            std::cout << "FALSE" << std::endl;
         }
 
-        ifs.close();
+        fileStream.close();
     }
 
     return 0;

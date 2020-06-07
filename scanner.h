@@ -6,7 +6,7 @@
 class Scanner
 {
 private:
-    std::istream *input;
+    std::istream *inputStream;
     Token lastToken;
     int row;
     int column;
@@ -39,9 +39,10 @@ private:
         }
 
         automata[0]['+'] = automata[0]['*'] = automata[0]['-'] = automata[0]['/'] = automata[0]['^'] = 2;
-        automata[0]['('] = automata[0][')'] = automata[0]['.'] = 3;
+        automata[0]['('] = automata[0][')'] = 3;
         automata[0]['\n'] = automata[0][' '] = automata[0]['\t'] = 4;
         automata[4]['\n'] = automata[4][' '] = automata[4]['\t'] = 4;
+        automata[0]['.'] = 5;
 
         // std::string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -96,12 +97,12 @@ protected:
 private:
     int peek()
     {
-        return input->peek();
+        return inputStream->peek();
     }
 
     int read()
     {
-        int temp = input->get();
+        int temp = inputStream->get();
         column++;
 
         if (temp == '\n')
@@ -129,19 +130,6 @@ private:
         do
         {
             int tempState = getNextState(currentState, peek());
-
-            // if (tempState == 1) {
-            //     nextLexeme = peek();
-
-            //     if (nextLexeme == ".") {
-            //         lexem += (char)read();
-            //     }
-
-            //     nextLexeme = peek();
-
-            //     if (nextLexeme == )
-
-            // }
 
             if (tempState != noEdge)
             {
@@ -188,7 +176,7 @@ public:
         row = 1;
         column = 1;
         initAutomata();
-        input = aInput;
+        inputStream = aInput;
     }
 
     Token nextToken()
@@ -200,18 +188,5 @@ public:
     {
         return lastToken;
     }
-
-    // void readFile(const std::string &nameOfFile)
-    // {
-    //     char ch;
-    //     std::string buffer;
-    //     std::fstream file(nameOfFile, std::fstream::in);
-
-    //     if (!file.is_open())
-    //     {
-    //         std::cout << "Error while opening the file\n";
-    //         exit(0);
-    //     }
-    // }
 };
 #endif // SCANNER_H
