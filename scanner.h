@@ -14,6 +14,7 @@ private:
     const static int maxState = 10;
     const static int startState = 0;
     const static int noEdge = -1;
+    const static int floatState = 5;
     int automata[maxState + 1][256];
     int finite[maxState + 1];
 
@@ -81,6 +82,10 @@ protected:
             return noEdge;
         }
 
+        if (aChar == 46) {
+            return floatState;
+        }
+
         return automata[aState][aChar];
     }
 
@@ -125,17 +130,29 @@ private:
         std::string lexem;
         int startColumn = column;
         int startRow = row;
-        std::string nextLexeme;
+        //std::string nextLexeme;
 
         do
         {
             int tempState = getNextState(currentState, peek());
 
+            if(tempState == floatState) {
+                do {
+                    currentState = tempState;
+                    lexem += (char)read();
+
+                } while(inputStream->peek() != ' ');
+                
+                tempState = noEdge;
+
+                //lexem.pop_back();
+
+            }
+
             if (tempState != noEdge)
             {
                 currentState = tempState;
                 lexem += (char)read();
-
             }
             else
             {
