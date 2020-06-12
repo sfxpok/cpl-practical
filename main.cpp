@@ -6,7 +6,7 @@ int main()
 {
 
     std::ifstream fileStream;
-    std::string file = "scanner_test";
+    std::string file = "parser_evaluator_test";
     fileStream.open(file);
     bool parseResult = false;
 

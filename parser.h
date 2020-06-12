@@ -1,6 +1,8 @@
 #ifndef PARSER_H
 #define PARSER_H
 #include "scanner.h"
+#include <iostream>
+#include <string>
 
 // Grammar:
 // E :: = T EE;
@@ -21,83 +23,141 @@ public:
         scan = &scanner_addr;
     }
 
+    double stringToDouble(std::string strValue)
+    {
+        return std::stod(strValue);
+    }
+
     bool Parse()
     {
 
-        do
-        { // get all tokens
+        double tmpVal;
+        //double output;
 
-            scan->nextToken();
+        scan->nextToken();
 
-        } while (!scan->currentToken().isEof());
+        //return E(tmpVal);
 
-        return E() && EOF;
-    }
+        std::cout << "Result: " << E(tmpVal) << std::endl;
 
-    bool E()
-    {
-        return T() && EE();
-    }
-
-    bool EE()
-    {
-        if (scan->currentToken().getLexem() == "+")
-        {
-            scan->nextToken();
-            return T() && EE();
+        if (!scan->currentToken().isEof()) {
+            return -1;
         }
-        else if (scan->currentToken().getLexem() == "-")
+
+        std::cout << "Result: " << tmpVal << std::endl;
+
+        // do
+        // { // get all tokens
+
+        //     //scan->nextToken();
+        //     tmpVal = scan->nextToken();
+
+        //     Eval = E(Eval);
+
+        //     std::cout << "Result: " << Eval << std::endl;
+        // } while (!scan->currentToken().isEof());
+
+        //return E() && EOF;
+    }
+
+    bool E(double &outVal)
+    {
+        double tmpVal;
+        return T(tmpVal) && EE(outVal, tmpVal);
+
+        //return T() && EE();
+    }
+
+    bool EE(double &outVal, double inVal)
+    {
+        if (scan->currentToken().getLexem().compare("+") == 0)
         {
             scan->nextToken();
-            return T() && EE();
+            double tmpVal;
+            return T(tmpVal) && EE(outVal, inVal + tmpVal); // inVal + tmpVal becomes 2 + 10 at some point in the runtime
+        }
+        else if (scan->currentToken().getLexem().compare("-") == 0)
+        {
+            scan->nextToken();
+            double tmpVal;
+            return T(tmpVal) && EE(outVal, inVal - tmpVal);
         }
         else
         {
-            return true;
+            outVal = inVal; // epsilon
+            // note: inVal becomes 12 at some point in runtime
         }
     }
 
-    bool T()
+    bool T(double &outVal)
     {
-        return F() && TT();
+        double tmpVal;
+        return F(tmpVal) && TT(outVal, tmpVal);
+
     }
 
-    bool TT()
+    bool TT(double &outVal, double inVal)
     {
-        if (scan->currentToken().getLexem() == "*")
+        if (scan->currentToken().getLexem().compare("*") == 0)
         {
             scan->nextToken();
-            return F() && TT();
+            double tmpVal;
+            return F(tmpVal) && TT(outVal, inVal * tmpVal);
+
+            //return F() && TT();
+
         }
-        else if (scan->currentToken().getLexem() == "/")
+        else if (scan->currentToken().getLexem().compare("/") == 0)
         {
             scan->nextToken();
-            return F() && TT();
+            double tmpVal;
+            return F(tmpVal) && TT(outVal, inVal / tmpVal);
+
+            //return F() && TT();
+
+        }
+        else
+        {
+            outVal = inVal; // epsilon
+            // note: inVal becomes 10 at some point in runtime
+            //return true;
         }
     }
 
-    bool F()
+    bool F(double &outVal)
     {
-        if (scan->currentToken().getLexem() == "(")
+        if (scan->currentToken().getLexem().compare("(") == 0)
         {
             scan->nextToken();
-            bool res = E();
-            if (res == true && scan->currentToken().getLexem() == ")")
+
+            double tmpVal;
+            bool temp = E(tmpVal);
+
+            if (temp == true && scan->currentToken().getLexem().compare(")") == 0)
             {
                 scan->nextToken();
-                return true;
             }
             else
             {
                 return false;
             }
         }
-        else if (scan->currentToken().getToken() == scan->tVariable)
+        else if (scan->currentToken().getToken() == scan->tInteger) // change to tVariable
         {
+
+            //scan->nextToken();
+
+            std::string currentLexem = scan->currentToken().getLexem();
+            outVal = stringToDouble(currentLexem);
+            std::cout << "Double catched: " << outVal << std::endl;
+
             scan->nextToken();
-            return true;
+
+            //return true;
+            //return Fval;
+            //return outVal;
         }
-        else if (scan->currentToken().getLexem() == "#")
+        else if (scan->currentToken().getLexem().compare("#") == 0)
         {
 
             scan->nextToken();
@@ -106,13 +166,17 @@ public:
             {
                 return true;
             }
+            else
+            {
+                return false;
+            }
         }
-        else if (scan->currentToken().getLexem() == "-")
+        else if (scan->currentToken().getLexem().compare("-") == 0)
         {
 
             scan->nextToken();
 
-            if (scan->currentToken().getLexem() == "#")
+            if (scan->currentToken().getLexem().compare("#") == 0)
             {
                 scan->nextToken();
 
@@ -120,7 +184,19 @@ public:
                 {
                     return true;
                 }
+                else
+                {
+                    return false;
+                }
             }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
         }
     }
 };

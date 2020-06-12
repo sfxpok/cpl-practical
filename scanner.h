@@ -82,7 +82,8 @@ protected:
             return noEdge;
         }
 
-        if (aChar == 46) {
+        if (aChar == 46)
+        {
             return floatState;
         }
 
@@ -136,17 +137,18 @@ private:
         {
             int tempState = getNextState(currentState, peek());
 
-            if(tempState == floatState) {
-                do {
+            if (tempState == floatState)
+            {
+                do
+                {
                     currentState = tempState;
                     lexem += (char)read();
 
-                } while(inputStream->peek() != ' ');
-                
+                } while (inputStream->peek() != ' ');
+
                 tempState = noEdge;
 
                 //lexem.pop_back();
-
             }
 
             if (tempState != noEdge)
