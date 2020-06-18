@@ -31,6 +31,15 @@ public:
     bool Parse()
     {
 
+        // do
+        // { // get all tokens
+
+        //     scan->nextToken();
+
+        // } while (!scan->currentToken().isEof());
+
+        // return 0;
+
         double tmpVal;
         //double output;
 
@@ -38,13 +47,19 @@ public:
 
         //return E(tmpVal);
 
-        std::cout << "Result: " << E(tmpVal) << std::endl;
+        //double finalResult;
+        E(tmpVal);
+
+        //std::cout << "FINALRESULT: " << finalResult << std::endl;
+
+        // std::cout << "Result: " << E(tmpVal) << std::endl;
 
         if (!scan->currentToken().isEof()) {
+            std::cout << "Runtime ended before EOF was reached." << std::endl;
             return -1;
         }
 
-        std::cout << "Result: " << tmpVal << std::endl;
+        std::cout << "Evaluator result: " << tmpVal << std::endl;
 
         // do
         // { // get all tokens
@@ -157,43 +172,49 @@ public:
             //return Fval;
             //return outVal;
         }
-        else if (scan->currentToken().getLexem().compare("#") == 0)
+        else if (scan->currentToken().getToken() == scan->tFloat)
         {
-
+            std::cout << "Found float" << std::endl;
             scan->nextToken();
-
-            if (scan->currentToken().getToken() == scan->tFloat)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
-        else if (scan->currentToken().getLexem().compare("-") == 0)
-        {
+        // else if (scan->currentToken().getLexem().compare("#") == 0)
+        // {
 
-            scan->nextToken();
+        //     scan->nextToken();
 
-            if (scan->currentToken().getLexem().compare("#") == 0)
-            {
-                scan->nextToken();
+        //     if (scan->currentToken().getToken() == scan->tFloat)
+        //     {
+        //         std::cout << "Found float" << std::endl;
+        //         return true;
+        //     }
+        //     else
+        //     {
+        //         return false;
+        //     }
+        // }
+        // else if (scan->currentToken().getLexem().compare("-") == 0)
+        // {
 
-                if (scan->currentToken().getToken() == scan->tFloat)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
+        //     scan->nextToken();
+
+        //     if (scan->currentToken().getLexem().compare("#") == 0)
+        //     {
+        //         scan->nextToken();
+
+        //         if (scan->currentToken().getToken() == scan->tFloat)
+        //         {
+        //             return true;
+        //         }
+        //         else
+        //         {
+        //             return false;
+        //         }
+        //     }
+        //     else
+        //     {
+        //         return false;
+        //     }
+        // }
         else
         {
             return false;

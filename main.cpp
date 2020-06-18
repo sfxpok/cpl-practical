@@ -19,11 +19,11 @@ int main()
         parseResult = parsingTask.Parse();
         if (parseResult)
         {
-            std::cout << "TRUE" << std::endl;
+            std::cout << "Parse result: TRUE" << std::endl;
         }
         else
         {
-            std::cout << "FALSE" << std::endl;
+            std::cout << "Parse result: FALSE" << std::endl;
         }
 
         fileStream.close();
